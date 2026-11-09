@@ -1,0 +1,50 @@
+title: Web Shell Detection
+id: e8f2b9d4-6a3c-4e7f-9b2d-1c5a8f3e6b9c
+status: experimental
+description: Detects potential web shell activities and command injection attempts through HTTP requests
+references:
+  - https://owasp.org/www-community/attacks/Command_Injection
+  - https://attack.mitre.org/techniques/T1505/003/
+tags:
+  - web_shell
+  - command_injection
+  - code_injection
+  - apache
+  - reconnaissance
+  - rce
+author: Java Kanaya Prada
+date: 2025/05/30
+modified: 2025/05/30
+logsource:
+  product: apache
+  service: 
+    - access.log
+detection:
+  keywords:
+    '|all|re':
+      - 'http_request'
+      - '(cmd|command|exec|system|eval)'
+      - '(whoami|ls|dir|cat|netstat|ifconfig|uname|systeminfo|pwd|ps|tasklist|wget|curl|nc|netcat|ping|chmod|chown|passwd|useradd|sudo|eval|base64_decode|system|exec|shell_exec)'
+  condition: keywords
+level: high
+category: Web Application Attack
+high_level_event:
+  type: Web Shell Activity
+  description: "Web shell activity detected: '{keys[Command_Executed]}' via {keys[PHP_File]} from {keys[Source_IP]} using {keys[User_Agent]}"
+  keys:
+    - name: Command_Executed
+      source: extract_webshell_command
+    - name: PHP_File
+      source: extract_webshell_php_file
+    - name: Source_IP
+      source: extract_webshell_source_ip
+    - name: HTTP_Method
+      source: extract_webshell_http_method
+    - name: Response_Code
+      source: extract_webshell_response_code
+    - name: User_Agent
+      source: extract_webshell_user_agent
+    - name: Attack_Type
+      source: extract_webshell_attack_type
+reasoning: 
+  description: "Reconnaissance commands found in apache access log {evidence}"

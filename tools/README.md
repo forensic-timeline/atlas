@@ -1,0 +1,1 @@
+python tools/sigmadft_label.py -i timeline.csv -o labeled.csv [-r RULES_DIR]
