@@ -1,0 +1,42 @@
+title: Microsoft Edge Launched
+id: 250f97da-9e2d-487e-9bec-c5466dbc0494
+status: experimental
+description: Detects execution of Microsoft Edge (msedge.exe) based on its Windows Prefetch entry. Normal user activity, not a threat indicator.
+references:
+  - https://github.com/libyal/libscca/blob/main/documentation/Windows%20Prefetch%20File%20(PF)%20format.asciidoc
+  - https://plaso.readthedocs.io/en/latest/sources/user/Parsers-and-plugins.html
+tags:
+  - program_execution
+  - browser
+  - edge
+  - prefetch
+author: yasirutomo
+date: 2026/11/10
+modified: 2026/11/10
+logsource:
+  product: windows
+  category: process_creation
+  service:
+    - prefetch
+  os:
+    - windows
+detection:
+  keywords:
+    '|all|re':
+      - 'Prefetch \[MSEDGE\.EXE\] was executed'
+      - 'WinPrefetch-prefetch$'
+  condition: keywords
+level: informational
+category: Program Execution
+high_level_event:
+  type: Edge Browser Launch
+  description: Microsoft Edge ({keys[Process_Name]}) executed from {keys[Process_Path]}, run count {keys[Run_Count]}
+  keys:
+    - name: Process_Name
+      source: extract_win_prefetch_process_name
+    - name: Process_Path
+      source: extract_win_prefetch_process_path
+    - name: Run_Count
+      source: extract_win_prefetch_run_count
+reasoning:
+  description: "Prefetch entry for MSEDGE.EXE found in {evidence}"

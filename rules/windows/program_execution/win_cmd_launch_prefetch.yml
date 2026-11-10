@@ -1,0 +1,44 @@
+title: Command Prompt Launched
+id: 6cc99cdb-acc0-4d3b-ad4c-29543833361d
+status: experimental
+description: Detects execution of the Windows command interpreter (cmd.exe) based on its Windows Prefetch entry. Normal user activity, not a threat indicator.
+references:
+  - https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/cmd
+  - https://learn.microsoft.com/en-us/powershell/module/mmagent/set-mmagent?view=windowsserver2025-ps
+  - https://github.com/libyal/libscca/blob/main/documentation/Windows%20Prefetch%20File%20(PF)%20format.asciidoc
+  - https://plaso.readthedocs.io/en/latest/sources/user/Parsers-and-plugins.html
+tags:
+  - program_execution
+  - command_shell
+  - cmd
+  - prefetch
+author: yasirutomo
+date: 2026/11/10
+modified: 2026/11/10
+logsource:
+  product: windows
+  category: process_creation
+  service:
+    - prefetch
+  os:
+    - windows
+detection:
+  keywords:
+    '|all|re':
+      - 'Prefetch \[CMD\.EXE\] was executed'
+      - 'WinPrefetch-prefetch$'
+  condition: keywords
+level: informational
+category: Program Execution
+high_level_event:
+  type: Command Shell Launch
+  description: Command Prompt ({keys[Process_Name]}) executed from {keys[Process_Path]}, run count {keys[Run_Count]}
+  keys:
+    - name: Process_Name
+      source: extract_win_prefetch_process_name
+    - name: Process_Path
+      source: extract_win_prefetch_process_path
+    - name: Run_Count
+      source: extract_win_prefetch_run_count
+reasoning:
+  description: "Prefetch entry for CMD.EXE found in {evidence}"
