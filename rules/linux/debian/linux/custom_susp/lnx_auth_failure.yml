@@ -20,6 +20,10 @@ logsource:
   service:
     - systemd_journal
     - auth.log
+  os:
+    - debian
+    - ubuntu
+    - kali
 detection:
   keywords:
     - 'Failed password for'

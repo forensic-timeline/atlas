@@ -11,6 +11,10 @@ tags:
     - attack.impact
 logsource:
     product: linux
+    os:
+      - debian
+      - ubuntu
+      - kali
 detection:
     keywords:
         # Generic suspicious log lines

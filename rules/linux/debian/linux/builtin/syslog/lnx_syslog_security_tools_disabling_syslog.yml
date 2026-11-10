@@ -16,6 +16,10 @@ tags:
 logsource:
     product: linux
     service: syslog
+    os:
+      - debian
+      - ubuntu
+      - kali
 detection:
     keywords:
         # UPDATE: change S to Uppercase for S on Stopping

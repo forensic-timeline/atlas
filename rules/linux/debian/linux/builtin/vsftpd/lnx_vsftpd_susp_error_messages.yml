@@ -13,6 +13,10 @@ tags:
 logsource:
     product: linux
     service: vsftpd
+    os:
+      - debian
+      - ubuntu
+      - kali
 detection:
     keywords:
         - 'Connection refused: too many sessions for this address.'

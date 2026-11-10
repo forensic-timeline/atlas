@@ -12,6 +12,10 @@ tags:
 logsource:
     product: linux
     service: cron
+    os:
+      - debian
+      - ubuntu
+      - kali
 detection:
     keywords:
         - 'REPLACE'

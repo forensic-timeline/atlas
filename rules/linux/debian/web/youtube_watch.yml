@@ -15,6 +15,10 @@ logsource:
   service:
     - sqlite/firefox_history
     - sqlite/chrome_27_history
+  os:
+    - debian
+    - ubuntu
+    - kali
 detection:
   keywords:
     '|all':
