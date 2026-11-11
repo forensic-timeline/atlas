@@ -1,0 +1,49 @@
+title: New Process Created
+id: d2fe76c0-62ce-4650-8614-ee2d7453c513
+status: experimental
+description: Detects Windows Security event 4688 (A new process has been created), logged by Microsoft-Windows-Security-Auditing when the Audit Process Creation subcategory is enabled. Normal system/user activity, not a threat indicator on its own.
+references:
+  - https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/auditing/event-4688
+  - https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/auditing/audit-process-creation
+  - https://plaso.readthedocs.io/en/latest/sources/user/Parsers-and-plugins.html
+tags:
+  - program_execution
+  - process_creation
+  - security_auditing
+author: yasirutomo
+date: 2026/11/12
+modified: 2026/11/12
+logsource:
+  product: windows
+  service: security
+  category: process_creation
+  os:
+    - windows
+# Source: https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/auditing/event-4688
+# Example message: [4688 / 0x1250] Provider identifier: {54849625-5478-4994-a5ba-3e3b0328c30d} Source Name: Microsoft-Windows-Security-Auditing Strings: ['S-1-5-18'  'WIN-GG82ULGC9GO$'  'CONTOSO'  '0x3e7'  '0x2bc'  'C:\\Windows\\System32\\rundll32.exe'  '%%1938'  '0xe74'  ''  'S-1-5-21-1377283216-344919071-3415362939-1104'  'dadmin'  'CONTOSO'  '0x4a5af0'  'C:\\Windows\\explorer.exe'  'S-1-16-8192'] Computer Name: WIN-GG82ULGC9GO.contoso.local Record Number: 2814 Event Level: 0
+# Example message: [4688 / 0x1250] Provider identifier: {54849625-5478-4994-a5ba-3e3b0328c30d} Source Name: Microsoft-Windows-Security-Auditing Strings: ['S-1-5-21-1-2-3-1001'  'User'  'WINDEV2311EVAL'  '0x1a2b3'  '0x1f04'  'C:\\Windows\\System32\\cmd.exe'  '%%1937'  '0x1d3c'  '"C:\\Windows\\system32\\cmd.exe" /c echo ok'  'S-1-0-0'  '-'  '-'  '0x0'  'C:\\Windows\\explorer.exe'  'S-1-16-12288'] Computer Name: WINDEV2311EVAL Record Number: 2815 Event Level: 0
+detection:
+  keywords:
+    '|all|re':
+      - '\[4688 / 0x1250\] Provider identifier: \{54849625-5478-4994-a5ba-3e3b0328c30d\}'
+      - 'Source Name: Microsoft-Windows-Security-Auditing'
+      - 'WinEVTX-winevtx$'
+  condition: keywords
+level: informational
+category: Program Execution
+high_level_event:
+  type: Process Creation
+  description: Process {keys[New_Process_Name]} created by {keys[Creator_Process_Name]} (subject {keys[Subject_User]}, token {keys[Token_Elevation_Type]}, command line "{keys[Command_Line]}")
+  keys:
+    - name: New_Process_Name
+      source: extract_win_4688_new_process_name
+    - name: Creator_Process_Name
+      source: extract_win_4688_creator_process_name
+    - name: Subject_User
+      source: extract_win_4688_subject_user
+    - name: Token_Elevation_Type
+      source: extract_win_4688_token_elevation_type
+    - name: Command_Line
+      source: extract_win_4688_command_line
+reasoning:
+  description: "Security event 4688 (A new process has been created) found in {evidence}"

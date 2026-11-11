@@ -22,6 +22,8 @@ logsource:
     - prefetch
   os:
     - windows
+# Source: https://zenodo.org/records/15493424
+# Example message: Prefetch [CMD.EXE] was executed - run count 3 path hints: \WINDOWS\SYSTEM32\CMD.EXE hash: 0xCD245F9E volume: 1 [serial number: 0x5CE1DF5A  device path: \VOLUME{01da182ce1985a64-5ce1df5a}]
 detection:
   keywords:
     '|all|re':
