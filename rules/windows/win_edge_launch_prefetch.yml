@@ -20,7 +20,7 @@ logsource:
     - prefetch
   os:
     - windows
-# Source: https://zenodo.org/records/15493424
+# Source message: https://zenodo.org/records/15493424
 # Example message: Prefetch [MSEDGE.EXE] was executed - run count 3 path hints: \PROGRAM FILES (X86)\MICROSOFT\EDGE\APPLICATION\MSEDGE.EXE hash: 0xF6B373B3 volume: 1 [serial number: 0x5CE1DF5A  device path: \VOLUME{01da182ce1985a64-5ce1df5a}]
 # Example message: Prefetch [MSEDGE.EXE] was executed - run count 3 path hints: \PROGRAM FILES (X86)\MICROSOFT\EDGE\APPLICATION\MSEDGE.EXE hash: 0xF6B373B1 volume: 1 [serial number: 0x5CE1DF5A  device path: \VOLUME{01da182ce1985a64-5ce1df5a}]
 detection:
